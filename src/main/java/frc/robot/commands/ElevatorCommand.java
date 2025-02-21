@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ElevatorSubsystem;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorCommand extends Command {
     private final ElevatorSubsystem elevator;
@@ -22,20 +23,22 @@ public class ElevatorCommand extends Command {
     public void execute() {
         double downSpeed;
         double upSpeed;
-        
+        SmartDashboard.putBoolean("Bottom Limit Switch", bottomlimitSwitch.get());
+        SmartDashboard.putBoolean("Top Limit Switch", toplimitSwitch.get());
+
         if (bottomlimitSwitch.get()){
             downSpeed = 0;
         } else {
-            downSpeed = controller.getL2Axis()/3; 
+            downSpeed = (controller.getL2Axis()+1)/-4; 
         }
 
         if (toplimitSwitch.get()){
             upSpeed = 0;
         } else {
-            upSpeed = controller.getR2Axis()/3;
+            upSpeed = (controller.getR2Axis()+1)/4;
         }
 
-        double speed = upSpeed - downSpeed; 
+        double speed = upSpeed + downSpeed; 
 
         elevator.setSpeed(speed);
     } 

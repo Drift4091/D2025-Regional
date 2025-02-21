@@ -31,12 +31,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double speed) {
-        motor1.setControl(motorOutput.withOutput(speed));
-        motor2.setControl(motorOutput.withOutput(speed));
+        motor1.set(speed);
+        motor2.set(speed);
+
+
     }
 
     public void stop() {
-        motor1.setControl(motorOutput.withOutput(0));
-        motor2.setControl(motorOutput.withOutput(0));
+        
+        motor1.set(0);
+        motor2.set(0);
     }
 }
