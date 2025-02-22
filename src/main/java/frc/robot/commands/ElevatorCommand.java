@@ -23,6 +23,7 @@ public class ElevatorCommand extends Command {
     public void execute() {
         double downSpeed;
         double upSpeed;
+        elevator.getEncoderPosition();
         SmartDashboard.putBoolean("Bottom Limit Switch", bottomlimitSwitch.get());
         SmartDashboard.putBoolean("Top Limit Switch", toplimitSwitch.get());
 
