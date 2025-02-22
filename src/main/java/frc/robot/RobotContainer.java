@@ -8,15 +8,18 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.AutoAlignToReef;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -35,6 +38,9 @@ public class RobotContainer {
     private final ElevatorSubsystem elevator = new ElevatorSubsystem(13, 14);
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+    
+    private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+    
     public RobotContainer() {
         configureBindings();
     }
@@ -51,6 +57,9 @@ public class RobotContainer {
             )
         );
 
+        new JoystickButton(joystick, PS4Controller.Button.kCross.value)
+            .whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
+    
         elevator.setDefaultCommand(new ElevatorCommand(elevator,joystick ));
         new JoystickButton(joystick, PS4Controller.Button.kCross.value).whileTrue(drivetrain.applyRequest(() -> brake));
         
