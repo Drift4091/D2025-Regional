@@ -44,6 +44,10 @@ public class ElevatorCommand extends Command {
         elevator.setSpeed(speed);
     } 
 
+
+    // ale
+
+    
     @Override
     public void end(boolean interrupted) {
         elevator.stop();
