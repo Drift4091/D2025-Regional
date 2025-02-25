@@ -23,17 +23,16 @@ public class ElevatorCommand extends Command {
     public void execute() {
         double downSpeed;
         double upSpeed;
-        elevator.getEncoderPosition();
         SmartDashboard.putBoolean("Bottom Limit Switch", bottomlimitSwitch.get());
         SmartDashboard.putBoolean("Top Limit Switch", toplimitSwitch.get());
 
-        if (bottomlimitSwitch.get()){
+        if (bottomlimitSwitch.get() || elevator.getEncoderPosition()<-0.5){
             downSpeed = 0;
         } else {
             downSpeed = (controller.getL2Axis()+1)/-4; 
         }
 
-        if (toplimitSwitch.get()){
+        if (toplimitSwitch.get()|| elevator.getEncoderPosition()>69){
             upSpeed = 0;
         } else {
             upSpeed = (controller.getR2Axis()+1)/4;
