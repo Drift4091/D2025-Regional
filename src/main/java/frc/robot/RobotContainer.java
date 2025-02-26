@@ -69,10 +69,10 @@ public class RobotContainer {
         new JoystickButton(joystick, PS4Controller.Button.kOptions.value).and(new JoystickButton(joystick, PS4Controller.Button.kSquare.value)).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         new JoystickButton(joystick, PS4Controller.Button.kSquare.value)
-    .onTrue(new MoveElevatorToHeight(elevator, 10));
+    .onTrue(new MoveElevatorToHeight(elevator,8));
 
     new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)
-    .onTrue(new MoveElevatorToHeight(elevator, 20));
+    .onTrue(new MoveElevatorToHeight(elevator, 27));
     
     new JoystickButton(joystick, PS4Controller.Button.kCircle.value)
     .onTrue(new MoveElevatorToHeight(elevator, 65));
