@@ -10,8 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ElevatorCommand extends Command {
     private final ElevatorSubsystem elevator;
     private final PS4Controller controller;
-    DigitalInput bottomlimitSwitch = new DigitalInput(0);
-    DigitalInput toplimitSwitch = new DigitalInput(1);
+
 
     public ElevatorCommand(ElevatorSubsystem elevator, PS4Controller controller) {
         this.elevator = elevator;
@@ -23,16 +22,16 @@ public class ElevatorCommand extends Command {
     public void execute() {
         double downSpeed;
         double upSpeed;
-        SmartDashboard.putBoolean("Bottom Limit Switch", bottomlimitSwitch.get());
-        SmartDashboard.putBoolean("Top Limit Switch", toplimitSwitch.get());
+        SmartDashboard.putBoolean("Bottom Limit Switch", elevator.getBottomLimitSwitch());
+        SmartDashboard.putBoolean("Top Limit Switch", elevator.getTopLimitSwitch());
 
-        if (bottomlimitSwitch.get() || elevator.getEncoderPosition()<0.5){
+        if (elevator.getBottomLimitSwitch() || elevator.getEncoderPosition()<0.5){
             downSpeed = 0;
         } else {
             downSpeed = (controller.getL2Axis()+1)/-4; 
         }
 
-        if (toplimitSwitch.get()|| elevator.getEncoderPosition()>72){
+        if (elevator.getTopLimitSwitch() || elevator.getEncoderPosition()>72){
             upSpeed = 0;
         } else {
             upSpeed = (controller.getR2Axis()+1)/4;
@@ -41,6 +40,7 @@ public class ElevatorCommand extends Command {
         double speed = upSpeed + downSpeed; 
 
         elevator.setSpeed(speed);
+        
     } 
 
 

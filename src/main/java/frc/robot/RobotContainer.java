@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.MoveElevatorToHeight;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -67,6 +68,9 @@ public class RobotContainer {
 
         new JoystickButton(joystick, PS4Controller.Button.kOptions.value).and(new JoystickButton(joystick, PS4Controller.Button.kSquare.value)).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
+        new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)
+    .onTrue(new MoveElevatorToHeight(elevator, 40));
+    
         // Reset field-centric heading on L1 press
         new JoystickButton(joystick, PS4Controller.Button.kL1.value)
             .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));  drivetrain.registerTelemetry(logger::telemeterize);

@@ -8,6 +8,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -15,6 +16,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final TalonFX motor1;
     private final TalonFX motor2;
     private final DutyCycleOut motorOutput = new DutyCycleOut(0);
+    DigitalInput bottomlimitSwitch = new DigitalInput(0);
+    DigitalInput toplimitSwitch = new DigitalInput(1);
 
     public ElevatorSubsystem(int motor1ID, int motor2ID) {
         motor1 = new TalonFX(motor1ID);
@@ -47,6 +50,14 @@ public class ElevatorSubsystem extends SubsystemBase {
         return(encoderValue);
     }
 
+    public boolean getBottomLimitSwitch(){
+        return (bottomlimitSwitch.get());
+    }
+
+    public boolean getTopLimitSwitch(){
+        return (toplimitSwitch.get());
+    }
+    
     public void stop() { 
         motor1.set(0);
         motor2.set(0);
