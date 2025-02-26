@@ -55,10 +55,10 @@ public class RobotContainer {
         elevator.setDefaultCommand(new ElevatorCommand(elevator,joystick ));
         new JoystickButton(joystick, PS4Controller.Button.kCross.value).whileTrue(drivetrain.applyRequest(() -> brake));
         
-        new JoystickButton(joystick, PS4Controller.Button.kCircle.value)
-        .whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
+        // new JoystickButton(joystick, PS4Controller.Button.kCircle.value)
+        // .whileTrue(drivetrain.applyRequest(() ->
+        //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        // ));
 
         new JoystickButton(joystick, PS4Controller.Button.kShare.value).and(new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
 
@@ -68,8 +68,14 @@ public class RobotContainer {
 
         new JoystickButton(joystick, PS4Controller.Button.kOptions.value).and(new JoystickButton(joystick, PS4Controller.Button.kSquare.value)).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)
-    .onTrue(new MoveElevatorToHeight(elevator, 40));
+        new JoystickButton(joystick, PS4Controller.Button.kSquare.value)
+    .onTrue(new MoveElevatorToHeight(elevator, 15));
+
+    new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)
+    .onTrue(new MoveElevatorToHeight(elevator, 45));
+    
+    new JoystickButton(joystick, PS4Controller.Button.kCircle.value)
+    .onTrue(new MoveElevatorToHeight(elevator, 65));
     
         // Reset field-centric heading on L1 press
         new JoystickButton(joystick, PS4Controller.Button.kL1.value)

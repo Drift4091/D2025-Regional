@@ -7,12 +7,12 @@ public class MoveElevatorToHeight extends Command {
   
     private final ElevatorSubsystem elevator;
     private final double targetHeight;
-    private final double kP = 0.01; // Tune this value as needed
-    private final double tolerance = 3.0; // Stop when within 1 unit
+    private final double kP = 0.2; // Tune this value as needed
+    private final double tolerance = 0.5; // Stop when within 1 unit
 
     public MoveElevatorToHeight(ElevatorSubsystem evilElevator, double evilTarget) {
         elevator = evilElevator;
-        targetHeight = Math.max(0.5, Math.min(evilTarget, 72)); // Clamp between limits
+        targetHeight = Math.max(1, Math.min(evilTarget, 72)); // Clamp between limits
         addRequirements(elevator);
     }
 
@@ -28,10 +28,15 @@ public class MoveElevatorToHeight extends Command {
         double speed = kP * error; 
 
         // Clamp speed to safe limits
-        speed = Math.max(-0.25, Math.min(speed, 0.25));
-
+        speed = Math.max(-0.5, Math.min(speed, 0.5));
+        if (elevator.getBottomLimitSwitch() && speed < 0){
+            speed = 0;
+        } else if (elevator.getTopLimitSwitch() && speed > 0){
+            speed = 0;
+        } else {
         elevator.setSpeed(speed);
     }
+}
 
     @Override
     public boolean isFinished() {
