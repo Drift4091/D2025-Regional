@@ -28,7 +28,7 @@ public class MoveElevatorToHeight extends Command {
         double speed = kP * error; 
 
         // Clamp speed to safe limits
-        speed = Math.max(-0.8, Math.min(speed, 0.8));
+        speed = Math.max(-0.25, Math.min(speed, 0.25));
 
         elevator.setSpeed(speed);
     }
