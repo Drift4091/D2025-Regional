@@ -1,10 +1,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -33,12 +37,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void setSpeed(double speed) {
         motor1.set(speed);
         motor2.set(speed);
-
-
     }
 
-    public void stop() {
-        
+    public double getEncoderPosition() {
+
+        StatusSignal<Angle> positionSignal = motor1.getPosition(); 
+        double encoderValue = positionSignal.getValueAsDouble(); 
+        SmartDashboard.putNumber("ElevatorEncoder", encoderValue);
+        return(encoderValue);
+    }
+
+    public void stop() { 
         motor1.set(0);
         motor2.set(0);
     }
