@@ -18,7 +18,7 @@ public class AutoAlignToReef extends Command {
     If the robot is too far left, the PID controller will strafe right.
     If the robot is angled wrong, the PID controller will rotate correctly.
     */
-    private final PIDController rotationPID = new PIDController(0.1, 0.0, 0.0); //PID for rotation calculates the error between the target and the current rotation
+    private final PIDController rotationPID = new PIDController(0, 0.0, 0.0); //PID for rotation calculates the error between the target and the current rotation
     private final PIDController strafePID = new PIDController(0.1, 0.0, 0.0); // PID for strafe calculates the error between the target and the current x position
     private final PIDController forwardPID = new PIDController(0.1, 0.0, 0.0); // PID for forward calculates the error between the target and the current y position
 
@@ -51,7 +51,7 @@ public class AutoAlignToReef extends Command {
      */
     @Override
     public void initialize() {
-        swerve.setDefaultCommand(null); // 🔹 Stops any default (teleop) command
+    
 
         rotationPID.setTolerance(1.0); //1 degree
         strafePID.setTolerance(0.05); // 5 cm
@@ -78,7 +78,7 @@ public class AutoAlignToReef extends Command {
         double[] botPose = limelight.getBotPose();
         double x = botPose[0];
         double y = botPose[1];
-        double rotation = botPose[5];
+        double rotation = Math.toRadians(botPose[5]);
 
         // We use PID to calculate movement speeds
         double rotationSpeed = rotationPID.calculate(rotation, 0.0);
