@@ -51,7 +51,6 @@ public class AutoAlignToReef extends Command {
      */
     @Override
     public void initialize() {
-    
 
         rotationPID.setTolerance(Math.toRadians(1.0)); // 1 degree
         strafePID.setTolerance(0.05); // 5 cm
