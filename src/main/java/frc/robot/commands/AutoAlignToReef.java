@@ -51,7 +51,6 @@ public class AutoAlignToReef extends Command {
      */
     @Override
     public void initialize() {
-        System.out.println("🛑 Stopping Teleop - AutoAlignToReef Started");
         swerve.setDefaultCommand(null); // 🔹 Stops any default (teleop) command
 
         rotationPID.setTolerance(1.0); //1 degree
@@ -62,14 +61,9 @@ public class AutoAlignToReef extends Command {
     // This is the main part of the command, everything in here will be constantly happening when the command is running
     @Override
     public void execute() {
-
-        System.out.println(" AutoAlignToReef command is executing...");
-
-        // Prints in the drive station if the camera can't detect a target
-        boolean targetValid = limelight.hasValidTarget();
-        System.out.println(" Has Valid Target: " + targetValid);
         
-        if (!targetValid) {
+        // Prints in the drive station if the camera can't detect a target
+        if (!limelight.hasValidTarget()) {
             DriverStation.reportError("No valid target found", false);
             return;
         }
@@ -91,15 +85,13 @@ public class AutoAlignToReef extends Command {
         double strafeSpeed = strafePID.calculate(x, Target_X);
         double forwardSpeed = forwardPID.calculate(y, Target_Y);
 
-        System.out.println("🔍 PID Outputs -> Forward: " + forwardSpeed + ", Strafe: " + strafeSpeed + ", Rotation: " + rotationSpeed);
-
         // We apply the speeds to the swerve drive
         driveRequest.withVelocityX(forwardSpeed)
                     .withVelocityY(strafeSpeed)
                     .withRotationalRate(rotationSpeed);
 
-        System.out.println("Sending Drive Request: " + driveRequest);
-        swerve.applyRequest(() -> driveRequest);
+        // Use setControl() instead of applyRequest()
+        swerve.setControl(driveRequest);
     }
 
     // Makes sure the robot stops when we are close enough to the target
@@ -110,7 +102,7 @@ public class AutoAlignToReef extends Command {
 
     @Override // Stops the movement of the robot
     public void end(boolean interrupted) {
-        swerve.applyRequest(() -> driveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
+        swerve.setControl(driveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
     }
 
     private boolean isReefTag(int tagID) {
@@ -118,12 +110,9 @@ public class AutoAlignToReef extends Command {
         
         for (int tag : validTags) {
             if (tagID == tag) {
-                System.out.println(" Tag " + tagID + " is a valid reef tag!");
                 return true;
             }
         }
-        
-        System.out.println(" Tag " + tagID + " is NOT a reef tag.");
         return false;
     }
 }
