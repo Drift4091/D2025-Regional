@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
 import edu.wpi.first.math.controller.PIDController;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -14,13 +13,12 @@ public class AutoAlignToReef extends Command {
     private final CommandSwerveDrivetrain swerve; 
     private final LimelightSubsystem limelight;
 
-    
     /*
     PID CONTROLERS 
     If the robot is too far left, the PID controller will strafe right.
     If the robot is angled wrong, the PID controller will rotate correctly.
-     */
-    private final PIDController rotationPID = new PIDController(0.1, 0.0, 0.0); //PID for rotation calulates the error between the target and the current rotation
+    */
+    private final PIDController rotationPID = new PIDController(0.1, 0.0, 0.0); //PID for rotation calculates the error between the target and the current rotation
     private final PIDController strafePID = new PIDController(0.1, 0.0, 0.0); // PID for strafe calculates the error between the target and the current x position
     private final PIDController forwardPID = new PIDController(0.1, 0.0, 0.0); // PID for forward calculates the error between the target and the current y position
 
@@ -28,7 +26,7 @@ public class AutoAlignToReef extends Command {
     AprilTags both sides (DON'T CHANGE) 
     These are the ID's of all the tags on both reefs. 
     We want to always track the ID's of the reef tags of our alliance color. 
-    We do this to avoid accidently aligning to the wrong reef.
+    We do this to avoid accidentally aligning to the wrong reef.
     */
     private final int[] blueTags = {17, 18, 19, 20, 21, 22};
     private final int[] redTags = {6, 7, 8, 9, 10, 11};
@@ -40,8 +38,7 @@ public class AutoAlignToReef extends Command {
     //This is the request that the swerve drive will use to move the robot. Its the same command that moves our robot in teleop (X, Y and Rotation) that we want for our bot
     private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric();
     
-    
-    //constructor (This is where we acctually create the command)
+    //constructor (This is where we actually create the command)
     public AutoAlignToReef(CommandSwerveDrivetrain swerveDrive, LimelightSubsystem limelight) {
         this.swerve = swerveDrive;
         this.limelight = limelight;
@@ -49,11 +46,14 @@ public class AutoAlignToReef extends Command {
     }
     
     /*
-     * We use these tolerances as we dont really mind small erros like it being 1 degrees off rotation wise. 
-     * This makes it easier to tune and honestly makes our life a lot easier. As we wont have the robot constantly oscillating (wiggling)
+     * We use these tolerances as we don’t really mind small errors like it being 1 degree off rotation-wise. 
+     * This makes it easier to tune and honestly makes our life a lot easier. As we won’t have the robot constantly oscillating (wiggling)
      */
     @Override
     public void initialize() {
+        System.out.println("🛑 Stopping Teleop - AutoAlignToReef Started");
+        swerve.setDefaultCommand(null); // 🔹 Stops any default (teleop) command
+
         rotationPID.setTolerance(1.0); //1 degree
         strafePID.setTolerance(0.05); // 5 cm
         forwardPID.setTolerance(.1); // 10 cm
@@ -63,15 +63,20 @@ public class AutoAlignToReef extends Command {
     @Override
     public void execute() {
 
+        System.out.println(" AutoAlignToReef command is executing...");
+
         // Prints in the drive station if the camera can't detect a target
-        if(!limelight.hasValidTarget()){
+        boolean targetValid = limelight.hasValidTarget();
+        System.out.println(" Has Valid Target: " + targetValid);
+        
+        if (!targetValid) {
             DriverStation.reportError("No valid target found", false);
             return;
         }
 
         // Prints in the drive station if the camera can see a target but it's not a reef tag
         int tagID = limelight.getTagID();
-        if(!isReefTag(tagID)){
+        if (!isReefTag(tagID)) {
             DriverStation.reportError("Not a reef tag", false);
             return;
         }
@@ -81,37 +86,44 @@ public class AutoAlignToReef extends Command {
         double y = botPose[1];
         double rotation = botPose[5];
 
-        //we use PID to calculate movement speeds
+        // We use PID to calculate movement speeds
         double rotationSpeed = rotationPID.calculate(rotation, 0.0);
         double strafeSpeed = strafePID.calculate(x, Target_X);
-        double forwardSpeed = forwardPID.calculate(y, Target_Y); 
+        double forwardSpeed = forwardPID.calculate(y, Target_Y);
 
-        //we apply the speeds to the swerve drive
+        System.out.println("🔍 PID Outputs -> Forward: " + forwardSpeed + ", Strafe: " + strafeSpeed + ", Rotation: " + rotationSpeed);
+
+        // We apply the speeds to the swerve drive
         driveRequest.withVelocityX(forwardSpeed)
                     .withVelocityY(strafeSpeed)
                     .withRotationalRate(rotationSpeed);
-                
-            swerve.applyRequest(() -> driveRequest);
+
+        System.out.println("Sending Drive Request: " + driveRequest);
+        swerve.applyRequest(() -> driveRequest);
     }
 
-    //Makes sure the robot stops when we are close enough to the target
+    // Makes sure the robot stops when we are close enough to the target
     @Override
     public boolean isFinished() {
         return rotationPID.atSetpoint() && strafePID.atSetpoint() && forwardPID.atSetpoint();
     }
 
-    @Override //Stops the movement of the robot
+    @Override // Stops the movement of the robot
     public void end(boolean interrupted) {
         swerve.applyRequest(() -> driveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
     }
 
     private boolean isReefTag(int tagID) {
-        int[] validTags = (DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Blue) ? blueTags : redTags;
+        int[] validTags = blueTags; // FORCE BLUE ALLIANCE
+        
         for (int tag : validTags) {
-            if (tagID == tag) return true;
+            if (tagID == tag) {
+                System.out.println(" Tag " + tagID + " is a valid reef tag!");
+                return true;
+            }
         }
+        
+        System.out.println(" Tag " + tagID + " is NOT a reef tag.");
         return false;
     }
 }
-
-

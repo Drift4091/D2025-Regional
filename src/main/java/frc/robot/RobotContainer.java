@@ -62,7 +62,7 @@ public class RobotContainer {
     
         elevator.setDefaultCommand(new ElevatorCommand(elevator,joystick ));
         
-        new JoystickButton(joystick, PS4Controller.Button.kCross.value).whileTrue(drivetrain.applyRequest(() -> brake));
+        // new JoystickButton(joystick, PS4Controller.Button.kCross.value).whileTrue(drivetrain.applyRequest(() -> brake));
         
         new JoystickButton(joystick, PS4Controller.Button.kCircle.value)
         .whileTrue(drivetrain.applyRequest(() ->

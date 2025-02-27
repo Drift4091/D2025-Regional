@@ -29,8 +29,12 @@ public class LimelightSubsystem extends SubsystemBase {
 
     /** Returns the detected AprilTag ID (or -1 if no tag is found) */
     public int getTagID() {
-        return (int) limelightTable.getEntry("tid").getDouble(-1);
+        double rawTagID = limelightTable.getEntry("tid").getDouble(-1);
+        int tagID = (int) Math.round(rawTagID); // Ensures correct integer conversion
+        System.out.println("📸 Limelight Detected Tag ID: " + tagID); // Debugging
+        return tagID;
     }
+    
 
     /* botpose gives the robot’s X, Y, Rotation based on AprilTags.
         botpose[0] = X Position (meters) WE USE THIS
@@ -41,11 +45,12 @@ public class LimelightSubsystem extends SubsystemBase {
         botpose[5] = Yaw (Rotation in degrees) WE USE THIS
      */
     public double[] getBotPose(){
+        
         return limelightTable.getEntry("botpose").getDoubleArray(new double[6]);
     }
     
     @Override
     public void periodic() { //prints bots pose 
-        System.out.println("Limelight X: " + getBotPose()[0] + " Y: " + getBotPose()[1] + " Rotation: " + getBotPose()[5]);
+        // System.out.println("Limelight X: " + getBotPose()[0] + " Y: " + getBotPose()[1] + " Rotation: " + getBotPose()[5]);
     }
 }
