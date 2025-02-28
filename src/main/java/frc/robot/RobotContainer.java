@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.AutoAlignToReef;
@@ -20,6 +21,7 @@ import frc.robot.commands.MoveElevatorToHeight;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.LEDSubsytem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 public class RobotContainer {
@@ -39,12 +41,18 @@ public class RobotContainer {
     private final ElevatorSubsystem elevator = new ElevatorSubsystem(13, 14);
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    
+    private final LEDSubsytem led = new LEDSubsytem(0, 30);
+
     private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
     
     public RobotContainer() {
         configureBindings();
     }
+
+    public Command setLEDRed() {
+        return new InstantCommand(() -> led.setColor(57, 255, 20), led);
+    }
+    
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
