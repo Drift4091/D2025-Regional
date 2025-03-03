@@ -10,7 +10,7 @@ public class ElevatorCommand extends Command {
     private final ElevatorSubsystem elevator;
     private final LEDSubsystem leds;
     private final PS4Controller controller;
-    private final double holdingForce = 0.01;
+    private final double holdingForce = 0.012;
 
     public ElevatorCommand(ElevatorSubsystem elevator, LEDSubsystem leds, PS4Controller controller) {
         this.elevator = elevator;
