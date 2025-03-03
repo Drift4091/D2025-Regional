@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ElevatorCommand extends Command {
     private final ElevatorSubsystem elevator;
     private final PS4Controller controller;
+    private final double holdingForce = 0.02;
 
 
     public ElevatorCommand(ElevatorSubsystem elevator, PS4Controller controller) {
@@ -35,6 +36,9 @@ public class ElevatorCommand extends Command {
             upSpeed = 0;
         } else {
             upSpeed = (controller.getR2Axis()+1)/4;
+            if (Math.abs(upSpeed) < holdingForce){  
+                upSpeed = holdingForce;
+            }
         }
 
         double speed = upSpeed + downSpeed; 
