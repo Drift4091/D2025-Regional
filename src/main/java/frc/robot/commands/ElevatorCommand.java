@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ElevatorCommand extends Command {
     private final ElevatorSubsystem elevator;
     private final PS4Controller controller;
-    private final double holdingForce = 0.02;
+    private final double holdingForce = 0.01;
 
 
     public ElevatorCommand(ElevatorSubsystem elevator, PS4Controller controller) {
