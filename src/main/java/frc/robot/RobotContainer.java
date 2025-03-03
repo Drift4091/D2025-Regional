@@ -14,13 +14,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.AutoAlignToReef;
+ import frc.robot.commands.AutoAlignToReef;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.MoveElevatorToHeight;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
+ import frc.robot.subsystems.LimelightSubsystem;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -40,7 +40,7 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     
-    private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+     private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
     
     public RobotContainer() {
         configureBindings();
@@ -58,8 +58,7 @@ public class RobotContainer {
             )
         );
 
-        new JoystickButton(joystick, PS4Controller.Button.kCross.value)
-            .whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
+     new JoystickButton(joystick, PS4Controller.Button.kCross.value).whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
     
         elevator.setDefaultCommand(new ElevatorCommand(elevator,joystick ));
         
