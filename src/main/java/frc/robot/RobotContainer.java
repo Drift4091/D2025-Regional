@@ -93,9 +93,9 @@ public class RobotContainer {
     .onTrue(new MoveElevatorToHeight(elevator, 65));
     
         // Reset field-centric heading on L1 press
-        new JoystickButton(joystick, PS4Controller.Button.kL1.value)
-            .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));  drivetrain.registerTelemetry(logger::telemeterize);
-        }
+    new JoystickButton(joystick, PS4Controller.Button.kL1.value)
+        .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));  drivetrain.registerTelemetry(logger::telemeterize);
+     }
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
