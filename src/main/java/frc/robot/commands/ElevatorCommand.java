@@ -24,16 +24,31 @@ public class ElevatorCommand extends Command {
     public void execute() {
         double downSpeed;
         double upSpeed;
-        SmartDashboard.putBoolean("Bottom Limit Switch", elevator.getBottomLimitSwitch());
-        SmartDashboard.putBoolean("Top Limit Switch", elevator.getTopLimitSwitch());
+        // SmartDashboard.putBoolean("Bottom Limit Switch", elevator.getBottomLimitSwitch());
+        // SmartDashboard.putBoolean("Top Limit Switch", elevator.getTopLimitSwitch());
 
-        if (elevator.getBottomLimitSwitch() || elevator.getEncoderPosition() < 1) {
+        // if (elevator.getBottomLimitSwitch() || elevator.getEncoderPosition() < 1) {
+        //     downSpeed = 0;
+        // } else {
+        //     downSpeed = (controller.getL2Axis() + 1) / -4;
+        // }
+
+        // if (elevator.getTopLimitSwitch() || elevator.getEncoderPosition() > 71) {
+        //     upSpeed = 0;
+        // } else {
+        //     upSpeed = (controller.getR2Axis() + 1) / 4;
+        //     if (Math.abs(upSpeed) < holdingForce) {
+        //         upSpeed = holdingForce;
+        //     }
+        // }
+
+        if ( elevator.getEncoderPosition() < 1) {
             downSpeed = 0;
         } else {
             downSpeed = (controller.getL2Axis() + 1) / -4;
         }
 
-        if (elevator.getTopLimitSwitch() || elevator.getEncoderPosition() > 71) {
+        if ( elevator.getEncoderPosition() > 71) {
             upSpeed = 0;
         } else {
             upSpeed = (controller.getR2Axis() + 1) / 4;
@@ -41,6 +56,7 @@ public class ElevatorCommand extends Command {
                 upSpeed = holdingForce;
             }
         }
+
 
         double speed = upSpeed + downSpeed;
         elevator.setSpeed(speed);
