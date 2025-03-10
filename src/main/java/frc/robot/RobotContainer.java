@@ -7,9 +7,13 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -25,6 +29,10 @@ import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.LEDSubsytem;
 
 public class RobotContainer {
+/* PathPlanner auto selector */
+
+
+
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -40,12 +48,26 @@ public class RobotContainer {
     private final PS4Controller joystick = new PS4Controller(0);
     private final ElevatorSubsystem elevator = new ElevatorSubsystem(13, 14);
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
+
+    
     private final LEDSubsytem led = new LEDSubsytem(0,30);
     private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
     
     public RobotContainer() {
         configureBindings();
+        
+
+        SmartDashboard.putData("Run Selected Auto", new InstantCommand(() -> {
+            Command autoCommand = autoChooser.getSelected();
+            if (autoCommand != null) {
+                autoCommand.schedule(); // Run auto command manually
+            } else {
+                System.out.println("No auto path selected!");
+            }
+        }));        
+        
     }
 
     public Command setLEDDeafult(){
@@ -98,7 +120,7 @@ public class RobotContainer {
      }
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return autoChooser.getSelected();
     }
 
 }
