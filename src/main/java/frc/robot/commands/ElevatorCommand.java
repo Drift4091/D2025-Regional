@@ -48,7 +48,7 @@ public class ElevatorCommand extends Command {
             downSpeed = (controller.getL2Axis() + 1) / -4;
         }
 
-        if ( elevator.getEncoderPosition() > 71) {
+        if ( elevator.getEncoderPosition() > 80) {
             upSpeed = 0;
         } else {
             upSpeed = (controller.getR2Axis() + 1) / 4;

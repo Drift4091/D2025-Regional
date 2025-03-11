@@ -26,6 +26,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.LEDSubsytem;
 
 public class RobotContainer {
@@ -50,7 +51,7 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
-
+    private final Shooter shooter = new Shooter(15, 16);
     
     private final LEDSubsytem led = new LEDSubsytem(0,30);
     private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
@@ -75,6 +76,14 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+
+        new JoystickButton(joystick, PS4Controller.Button.kR1.value)
+        .whileTrue(shooter.runShooterForwardCommand());
+
+        
+        new JoystickButton(joystick, PS4Controller.Button.kL1.value)
+            .whileTrue(shooter.runShooterReverseCommand());
+
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
@@ -99,14 +108,14 @@ public class RobotContainer {
 
         new JoystickButton(joystick, PS4Controller.Button.kShare.value).and(new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
 
-        new JoystickButton(joystick, PS4Controller.Button.kShare.value).and(new JoystickButton(joystick, PS4Controller.Button.kSquare.value)).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+       
 
         new JoystickButton(joystick, PS4Controller.Button.kOptions.value).and(new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
 
         new JoystickButton(joystick, PS4Controller.Button.kOptions.value).and(new JoystickButton(joystick, PS4Controller.Button.kSquare.value)).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        new JoystickButton(joystick, PS4Controller.Button.kSquare.value)
-    .onTrue(new MoveElevatorToHeight(elevator,8));
+    //     new JoystickButton(joystick, PS4Controller.Button.kSquare.value)
+    // .onTrue(new MoveElevatorToHeight(elevator,8));
 
     new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)
     .onTrue(new MoveElevatorToHeight(elevator, 27));
@@ -114,9 +123,9 @@ public class RobotContainer {
     new JoystickButton(joystick, PS4Controller.Button.kCircle.value)
     .onTrue(new MoveElevatorToHeight(elevator, 65));
     
-        // Reset field-centric heading on L1 press
-    new JoystickButton(joystick, PS4Controller.Button.kL1.value)
-        .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));  drivetrain.registerTelemetry(logger::telemeterize);
+    //     // Reset field-centric heading on L1 press
+    // new JoystickButton(joystick, PS4Controller.Button.kL1.value)
+    //     .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));  drivetrain.registerTelemetry(logger::telemeterize);
      }
 
     public Command getAutonomousCommand() {
