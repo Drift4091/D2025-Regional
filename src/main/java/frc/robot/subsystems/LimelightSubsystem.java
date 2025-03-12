@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightSubsystem extends SubsystemBase {
@@ -44,11 +45,13 @@ public class LimelightSubsystem extends SubsystemBase {
         botpose[4] = Pitch (tilt forward/backward)
         botpose[5] = Yaw (Rotation in degrees) WE USE THIS
      */
-    public double[] getBotPose(){
-        
-        return limelightTable.getEntry("botpose").getDoubleArray(new double[6]);
+    public double[] getBotPose() {
+        String poseKey = DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Blue
+            ? "botpose_wpiblue"
+            : "botpose_wpired";
+
+        return limelightTable.getEntry(poseKey).getDoubleArray(new double[6]);
     }
-    
     @Override
     public void periodic() { //prints bots pose 
         // System.out.println("Limelight X: " + getBotPose()[0] + " Y: " + getBotPose()[1] + " Rotation: " + getBotPose()[5]);

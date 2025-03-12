@@ -51,7 +51,7 @@ public class AutoAlignToReef extends Command {
      */
     @Override
     public void initialize() {
-
+        System.out.println("✅ AutoAlignToReef has started!");
         rotationPID.setTolerance(Math.toRadians(1.0)); // 1 degree
         strafePID.setTolerance(0.05); // 5 cm
         forwardPID.setTolerance(.1); // 10 cm
@@ -60,6 +60,7 @@ public class AutoAlignToReef extends Command {
     // This is the main part of the command, everything in here will be constantly happening when the command is running
     @Override
     public void execute() {
+        System.out.println("🛠 Executing AutoAlignToReef...");
         
         // Prints in the drive station if the camera can't detect a target
         if (!limelight.hasValidTarget()) {
@@ -84,12 +85,17 @@ public class AutoAlignToReef extends Command {
         double strafeSpeed = strafePID.calculate(x, Target_X);
         double forwardSpeed = forwardPID.calculate(y, Target_Y);
 
+        if (Math.abs(forwardSpeed) < 0.01 && Math.abs(strafeSpeed) < 0.01 && Math.abs(rotationSpeed) < 0.01) {
+            System.out.println(" PID Output too low, robot won’t move!");
+        }
+
         // We apply the speeds to the swerve drive
         driveRequest.withVelocityX(forwardSpeed)
                     .withVelocityY(strafeSpeed)
                     .withRotationalRate(rotationSpeed);
 
         // Use setControl() instead of applyRequest()
+        System.out.println(" Sending drive request: Forward=" + forwardSpeed + " Strafe=" + strafeSpeed + " Rotation=" + rotationSpeed);
         swerve.setControl(driveRequest);
     }
 
@@ -105,8 +111,10 @@ public class AutoAlignToReef extends Command {
     }
 
     private boolean isReefTag(int tagID) {
-        int[] validTags = blueTags; // FORCE BLUE ALLIANCE
-        
+        int[] validTags = (DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Blue)
+            ? blueTags
+            : redTags;
+    
         for (int tag : validTags) {
             if (tagID == tag) {
                 return true;
@@ -114,4 +122,5 @@ public class AutoAlignToReef extends Command {
         }
         return false;
     }
+    
 }
