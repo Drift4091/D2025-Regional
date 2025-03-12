@@ -61,43 +61,52 @@ public class AutoAlignToReef extends Command {
     @Override
     public void execute() {
         System.out.println("🛠 Executing AutoAlignToReef...");
-        
-        // Prints in the drive station if the camera can't detect a target
+    
         if (!limelight.hasValidTarget()) {
-            DriverStation.reportError("No valid target found", false);
+            System.out.println("🚨 Exiting: No valid target!");
             return;
         }
-
-        // Prints in the drive station if the camera can see a target but it's not a reef tag
+    
         int tagID = limelight.getTagID();
+        System.out.println("🆔 Checking if Tag " + tagID + " is a valid reef tag...");
+    
         if (!isReefTag(tagID)) {
-            DriverStation.reportError("Not a reef tag", false);
+            System.out.println("🚨 Exiting: Not a reef tag! Tag ID: " + tagID);
             return;
         }
-
+    
+        System.out.println("✅ Tag " + tagID + " is a valid reef tag. Proceeding...");
+    
         double[] botPose = limelight.getBotPose();
         double x = botPose[0];
         double y = botPose[1];
-        double rotation = Math.toRadians(botPose[5]);
-
+        double rotation = Math.toRadians(botPose[5]); // Convert degrees to radians
+    
+        System.out.println("📍 Robot Position -> X: " + x + " Y: " + y + " Rotation: " + botPose[5] + "° (" + rotation + " rad)");
+    
         // We use PID to calculate movement speeds
         double rotationSpeed = rotationPID.calculate(rotation, 0.0);
         double strafeSpeed = strafePID.calculate(x, Target_X);
         double forwardSpeed = forwardPID.calculate(y, Target_Y);
-
+    
+        System.out.println("🎯 PID Outputs -> Forward: " + forwardSpeed + ", Strafe: " + strafeSpeed + ", Rotation: " + rotationSpeed);
+    
+        // Check if PID outputs are too low
         if (Math.abs(forwardSpeed) < 0.01 && Math.abs(strafeSpeed) < 0.01 && Math.abs(rotationSpeed) < 0.01) {
-            System.out.println(" PID Output too low, robot won’t move!");
+            System.out.println("⚠️ PID Output too low, robot won’t move!");
         }
-
-        // We apply the speeds to the swerve drive
+    
+        // Apply the speeds to the swerve drive
         driveRequest.withVelocityX(forwardSpeed)
                     .withVelocityY(strafeSpeed)
                     .withRotationalRate(rotationSpeed);
-
-        // Use setControl() instead of applyRequest()
-        System.out.println(" Sending drive request: Forward=" + forwardSpeed + " Strafe=" + strafeSpeed + " Rotation=" + rotationSpeed);
+    
+        System.out.println("🚀 Sending drive request: Forward=" + forwardSpeed + " Strafe=" + strafeSpeed + " Rotation=" + rotationSpeed);
+        
+        // Send the command to the drivetrain
         swerve.setControl(driveRequest);
     }
+    
 
     // Makes sure the robot stops when we are close enough to the target
     @Override
@@ -109,18 +118,25 @@ public class AutoAlignToReef extends Command {
     public void end(boolean interrupted) {
         swerve.setControl(driveRequest.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
     }
-
+    
     private boolean isReefTag(int tagID) {
-        int[] validTags = (DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue) == DriverStation.Alliance.Blue)
-            ? blueTags
-            : redTags;
+        int[] validTags = blueTags; // 🔹 Always use BLUE tags
+    
+        // Debugging information
+        System.out.println("🔍 Checking if Tag " + tagID + " is in " + java.util.Arrays.toString(validTags));
     
         for (int tag : validTags) {
             if (tagID == tag) {
+                System.out.println("✅ Tag " + tagID + " is a valid reef tag!");
                 return true;
             }
         }
+        
+        System.out.println("❌ Exiting: Not a reef tag! Tag ID: " + tagID);
         return false;
     }
+    
+    
+    
     
 }
