@@ -16,8 +16,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final TalonFX motor1;
     private final TalonFX motor2;
     private final DutyCycleOut motorOutput = new DutyCycleOut(0);
-    // DigitalInput bottomlimitSwitch = new DigitalInput(0);
-    // DigitalInput toplimitSwitch = new DigitalInput(1);
+    DigitalInput bottomlimitSwitch = new DigitalInput(0);
 
     public ElevatorSubsystem(int motor1ID, int motor2ID) {
         motor1 = new TalonFX(motor1ID);
@@ -43,16 +42,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public double getEncoderPosition() {
-
         StatusSignal<Angle> positionSignal = motor1.getPosition(); 
         double encoderValue = positionSignal.getValueAsDouble(); 
         SmartDashboard.putNumber("ElevatorEncoder", encoderValue);
         return(encoderValue);
     }
 
-    // public boolean getBottomLimitSwitch(){
-    //     return (bottomlimitSwitch.get());
-    // }
+    public boolean getBottomLimitSwitch(){
+        return (bottomlimitSwitch.get());
+    }
 
     // public boolean getTopLimitSwitch(){
     //     return (toplimitSwitch.get());
