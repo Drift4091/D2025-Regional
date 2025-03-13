@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ElevatorSubsystem extends SubsystemBase {
     private final TalonFX motor1;
     private final TalonFX motor2;
+    
     private final DutyCycleOut motorOutput = new DutyCycleOut(0);
-    // DigitalInput bottomlimitSwitch = new DigitalInput(0);
-    // DigitalInput toplimitSwitch = new DigitalInput(1);
+    private final DigitalInput bottomLimitSwitch = new DigitalInput(0); // DIO port 0
 
     public ElevatorSubsystem(int motor1ID, int motor2ID) {
         motor1 = new TalonFX(motor1ID);
@@ -37,29 +37,37 @@ public class ElevatorSubsystem extends SubsystemBase {
         motor2.getConfigurator().apply(motor2Config);
     }
 
+    public void resetEncoder() {
+        System.out.println("Resetting encoder...");
+        motor1.setPosition(0); // Reset encoder
+    }
     public void setSpeed(double speed) {
         motor1.set(speed);
         motor2.set(speed);
     }
 
     public double getEncoderPosition() {
-
-        StatusSignal<Angle> positionSignal = motor1.getPosition(); 
-        double encoderValue = positionSignal.getValueAsDouble(); 
-        SmartDashboard.putNumber("ElevatorEncoder", encoderValue);
-        return(encoderValue);
+        StatusSignal<Angle> positionSignal = motor1.getPosition();
+        double encoderValue = positionSignal.getValueAsDouble();
+        SmartDashboard.putNumber("Elevator Encoder", encoderValue);
+        return encoderValue;
     }
 
-    // public boolean getBottomLimitSwitch(){
-    //     return (bottomlimitSwitch.get());
-    // }
+    public boolean getBottomLimitSwitch() {
+        boolean isPressed = bottomLimitSwitch.get(); // Read the switch state
+        SmartDashboard.putBoolean("Bottom Limit Switch", isPressed);
+        return isPressed; // Output to SmartDashboard/Shuffleboard
+    }
 
-    // public boolean getTopLimitSwitch(){
-    //     return (toplimitSwitch.get());
-    // }
-    
     public void stop() { 
         motor1.set(0);
         motor2.set(0);
+    }
+
+    @Override
+    public void periodic() {
+        // Update the limit switch status every cycle
+        getBottomLimitSwitch();
+        
     }
 }

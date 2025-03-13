@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
  import frc.robot.commands.AutoAlignToReef;
 import frc.robot.commands.ElevatorCommand;
@@ -75,7 +76,12 @@ public class RobotContainer {
         return new InstantCommand(() -> led.setColor(57,255,20), led);
     }
 
+    
+
     private void configureBindings() {
+
+        new Trigger(joystick::getOptionsButtonPressed)
+            .onTrue(new InstantCommand(() -> elevator.resetEncoder()));
 
         new JoystickButton(joystick, PS4Controller.Button.kR1.value)
         .whileTrue(shooter.runShooterForwardCommand());
@@ -95,7 +101,7 @@ public class RobotContainer {
             )
         );
 
-     new JoystickButton(joystick, PS4Controller.Button.kCross.value).whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
+        new JoystickButton(joystick, PS4Controller.Button.kCross.value).whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
     
         elevator.setDefaultCommand(new ElevatorCommand(elevator,joystick ));
         
@@ -106,7 +112,7 @@ public class RobotContainer {
         //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         // ));
 
-        new JoystickButton(joystick, PS4Controller.Button.kShare.value).and(new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // new JoystickButton(joystick, PS4Controller.Button.kShare.value).and(new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
 
        
 
@@ -123,9 +129,10 @@ public class RobotContainer {
     new JoystickButton(joystick, PS4Controller.Button.kCircle.value)
     .onTrue(new MoveElevatorToHeight(elevator, 65));
     
-    //     // Reset field-centric heading on L1 press
-    // new JoystickButton(joystick, PS4Controller.Button.kL1.value)
-    //     .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));  drivetrain.registerTelemetry(logger::telemeterize);
+    
+        // Reset field-centric heading on L1 press
+    new JoystickButton(joystick, PS4Controller.Button.kShare.value)
+        .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));  drivetrain.registerTelemetry(logger::telemeterize);
      }
 
     public Command getAutonomousCommand() {

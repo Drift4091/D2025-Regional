@@ -42,13 +42,13 @@ public class ElevatorCommand extends Command {
         //     }
         // }
 
-        if ( elevator.getEncoderPosition() < 1) {
+        if ( elevator.getEncoderPosition() < 0.25d) {
             downSpeed = 0;
         } else {
             downSpeed = (controller.getL2Axis() + 1) / -4;
         }
 
-        if ( elevator.getEncoderPosition() > 80) {
+        if ( elevator.getEncoderPosition() > 77) {
             upSpeed = 0;
         } else {
             upSpeed = (controller.getR2Axis() + 1) / 4;
