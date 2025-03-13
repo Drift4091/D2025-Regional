@@ -35,7 +35,6 @@ public class MoveElevatorToHeight extends Command {
             speed = 0;
         } else {
         elevator.setSpeed(speed);
-
     }
 }
 
@@ -46,6 +45,9 @@ public class MoveElevatorToHeight extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        if(targetHeight == 0){
+            elevator.resetEncoder();
+        }
         System.out.println("MoveElevatorToHeight ended.");
         elevator.stop();
     }

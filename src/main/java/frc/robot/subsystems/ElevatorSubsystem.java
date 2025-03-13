@@ -62,4 +62,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         motor2.set(0);
     }
     
+    public void resetEncoder(){
+        motor1.setPosition(0);
+    }
+    
 }
