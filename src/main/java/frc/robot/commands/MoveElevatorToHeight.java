@@ -27,22 +27,15 @@ public class MoveElevatorToHeight extends Command {
         double error = targetHeight - currentHeight;
         double speed = kP * error; 
 
-        // Clamp speed to safe limits
-        // speed = Math.max(-0.5, Math.min(speed, 0.5));
-        // if (elevator.getBottomLimitSwitch() && speed < 0){
-        //     speed = 0;
-        // } else if (elevator.getTopLimitSwitch() && speed > 0){
-        //     speed = 0;
-        // } else {
-        // elevator.setSpeed(speed);
-
+    //    Clamp speed to safe limits
         speed = Math.max(-0.5, Math.min(speed, 0.5));
-        if (speed < 0){
+        if (elevator.getBottomLimitSwitch() && speed < 0){
             speed = 0;
-        } else if (speed > 0){
+        } else if (elevator.getEncoderPosition()>80 && speed > 0){
             speed = 0;
         } else {
         elevator.setSpeed(speed);
+
     }
 }
 
