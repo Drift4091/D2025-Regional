@@ -116,7 +116,7 @@ public class RobotContainer {
         .onTrue(new MoveElevatorToHeight(elevator,0));
 
         new JoystickButton(joystick, PS4Controller.Button.kSquare.value)
-    .onTrue(new MoveElevatorToHeight(elevator,8));
+    .onTrue(new MoveElevatorToHeight(elevator,10));
 
     new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)
     .onTrue(new MoveElevatorToHeight(elevator, 27));
