@@ -13,8 +13,6 @@ public class Shooter extends SubsystemBase {
     public Shooter(int shooterMotorOneID, int shooterMotorTwoID) {
         shooterMotorOne = new SparkMax(shooterMotorOneID, MotorType.kBrushless);
         shooterMotorTwo = new SparkMax(shooterMotorTwoID, MotorType.kBrushless);
-
-
     }
 
     public void setSpeed(double speed) {
