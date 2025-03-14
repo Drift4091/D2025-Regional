@@ -45,8 +45,8 @@ public class RobotContainer {
     //  SUBSYSTEMS
     // =========================
     private final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    private final AlgaeShooter algae = new AlgaeShooter(55);
-    private final AlgaeJoint joint = new AlgaeJoint(56);
+    private final AlgaeShooter algae = new AlgaeShooter(20);
+    private final AlgaeJoint joint = new AlgaeJoint(17);
     private final Shooter shooter = new Shooter(15, 16);
     private final ElevatorSubsystem elevator = new ElevatorSubsystem(13, 14);
     private final LEDSubsytem led = new LEDSubsytem(0, 30);
@@ -56,6 +56,7 @@ public class RobotContainer {
     //  CONTROLLER
     // =========================
     private final PS4Controller joystick = new PS4Controller(0);
+    private final PS4Controller elevatorJoystick = new PS4Controller(1);
 
     // =========================
     //  AUTO SELECTOR
@@ -90,41 +91,43 @@ public class RobotContainer {
     private void configureBindings() {
 
         // Shooter Controls
-        new JoystickButton(joystick, PS4Controller.Button.kR1.value)
+
+        new JoystickButton(elevatorJoystick, PS4Controller.Button.kL1.value)
+        .whileTrue(shooter.runShooterReverseCommand());
+
+        new JoystickButton(elevatorJoystick, PS4Controller.Button.kR1.value)
                 .whileTrue(shooter.runShooterForwardCommand());
         
-        new JoystickButton(joystick, PS4Controller.Button.kL1.value)
-                .whileTrue(shooter.runShooterReverseCommand());
-
-        // Algae Shooter Controls (L3 & R3)
-        new Trigger(() -> joystick.getL3Button())
+        // Algae Shooter Controls (Triangle & Circle)
+        new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)
                 .whileTrue(algae.runShooterForwardCommand());
 
-        new Trigger(() -> joystick.getR3Button())
+        new JoystickButton(joystick, PS4Controller.Button.kCircle.value)
                 .whileTrue(algae.runShooterReverseCommand());
 
         // Auto Aligning using Limelight
         new JoystickButton(joystick, PS4Controller.Button.kCross.value)
                 .whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
 
-        // Elevator Controls
-        elevator.setDefaultCommand(new ElevatorCommand(elevator, joystick));
-
+        // Field-centric reset
         new JoystickButton(joystick, PS4Controller.Button.kShare.value)
+                .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        // Elevator Controls
+        elevator.setDefaultCommand(new ElevatorCommand(elevator, elevatorJoystick));
+
+        new JoystickButton(elevatorJoystick, PS4Controller.Button.kCross.value)
                 .onTrue(new MoveElevatorToHeight(elevator, 0));
 
-        new JoystickButton(joystick, PS4Controller.Button.kSquare.value)
-                .onTrue(new MoveElevatorToHeight(elevator, 10));
+        new JoystickButton(elevatorJoystick, PS4Controller.Button.kSquare.value)
+                .onTrue(new MoveElevatorToHeight(elevator, 17.5));
 
-        new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)
-                .onTrue(new MoveElevatorToHeight(elevator, 27));
+        new JoystickButton(elevatorJoystick, PS4Controller.Button.kTriangle.value)
+                .onTrue(new MoveElevatorToHeight(elevator, 42));
 
-        new JoystickButton(joystick, PS4Controller.Button.kCircle.value)
-                .onTrue(new MoveElevatorToHeight(elevator, 65));
+        new JoystickButton(elevatorJoystick, PS4Controller.Button.kCircle.value)
+                .onTrue(new MoveElevatorToHeight(elevator, 75));
 
-        // Field-centric reset
-        new JoystickButton(joystick, PS4Controller.Button.kOptions.value)
-                .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         // =========================
         //  DRIVETRAIN DEFAULT COMMAND
