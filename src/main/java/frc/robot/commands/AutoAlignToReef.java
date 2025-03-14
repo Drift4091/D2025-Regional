@@ -18,9 +18,9 @@ public class AutoAlignToReef extends Command {
     If the robot is too far left, the PID controller will strafe right.
     If the robot is angled wrong, the PID controller will rotate correctly.
     */
-    private final PIDController rotationPID = new PIDController(0, 0.0, 0.0); //PID for rotation calculates the error between the target and the current rotation
+    private final PIDController rotationPID = new PIDController(0.5, 0.0, 0.0); //PID for rotation calculates the error between the target and the current rotation
     private final PIDController strafePID = new PIDController(0.1, 0.0, 0.0); // PID for strafe calculates the error between the target and the current x position
-    private final PIDController forwardPID = new PIDController(0.1, 0.0, 0.0); // PID for forward calculates the error between the target and the current y position
+    private final PIDController forwardPID = new PIDController(0.5, 0.0, 0.0); // PID for forward calculates the error between the target and the current y position
 
     /*
     AprilTags both sides (DON'T CHANGE) 

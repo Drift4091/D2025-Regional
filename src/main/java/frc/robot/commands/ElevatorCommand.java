@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ElevatorCommand extends Command {
     private final ElevatorSubsystem elevator;
     private final PS4Controller controller;
-    private final double holdingForce = 0.012;
+    private final double holdingForce = 0.015;
 
     public ElevatorCommand(ElevatorSubsystem elevator, PS4Controller controller) {
         this.elevator = elevator;
@@ -28,11 +28,12 @@ public class ElevatorCommand extends Command {
 
         if ( elevator.getEncoderPosition() < 1 || elevator.getBottomLimitSwitch()) {
             downSpeed = 0;
+            
         } else {
             downSpeed = (controller.getL2Axis() + 1) / -4;
         }
 
-        if ( elevator.getEncoderPosition() > 80) {
+        if ( elevator.getEncoderPosition() > 77.5) {
             upSpeed = 0;
         } else {
             upSpeed = (controller.getR2Axis() + 1) / 4;

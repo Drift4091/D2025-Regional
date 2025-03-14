@@ -12,7 +12,7 @@ public class MoveElevatorToHeight extends Command {
 
     public MoveElevatorToHeight(ElevatorSubsystem evilElevator, double evilTarget) {
         elevator = evilElevator;
-        targetHeight = Math.max(1, Math.min(evilTarget, 72)); // Clamp between limits
+        targetHeight = Math.max(1, Math.min(evilTarget, 77.5)); // Clamp between limits
         addRequirements(elevator);
     }
 
@@ -31,7 +31,7 @@ public class MoveElevatorToHeight extends Command {
         speed = Math.max(-0.5, Math.min(speed, 0.5));
         if (elevator.getBottomLimitSwitch() && speed < 0){
             speed = 0;
-        } else if (elevator.getEncoderPosition()>80 && speed > 0){
+        } else if (elevator.getEncoderPosition()>77.5 && speed > 0){
             speed = 0;
         } else {
         elevator.setSpeed(speed);

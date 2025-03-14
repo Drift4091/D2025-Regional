@@ -30,7 +30,7 @@ public class Shooter extends SubsystemBase {
     /** Runs shooter forward at 30% speed */
     public Command runShooterForwardCommand() {
         return this.startEnd(() -> {
-            setSpeed(-0.3);
+            setSpeed(-0.5);
             System.out.println("Shooter Forward"); // Debug log
         }, this::stop);
     }
@@ -38,7 +38,7 @@ public class Shooter extends SubsystemBase {
     /** Runs shooter in reverse at -30% speed */
     public Command runShooterReverseCommand() {
         return this.startEnd(() -> {
-            setSpeed(0.3);
+            setSpeed(0.5);
             System.out.println("Shooter Reverse"); // Debug log
         }, this::stop);
     }
