@@ -45,7 +45,8 @@ public class RobotContainer {
     //  SUBSYSTEMS
     // =========================
     private final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    private final Algae algae = new Algae(55, 56);
+    private final AlgaeShooter algae = new AlgaeShooter(55);
+    private final AlgaeJoint joint = new AlgaeJoint(56);
     private final Shooter shooter = new Shooter(15, 16);
     private final ElevatorSubsystem elevator = new ElevatorSubsystem(13, 14);
     private final LEDSubsytem led = new LEDSubsytem(0, 30);

@@ -10,31 +10,28 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Algae extends SubsystemBase {
-    private final SparkMax shooterMotorOne;
-    private final TalonFX shooterMotorTwo;
+public class AlgaeShooter extends SubsystemBase {
+    private final TalonFX shooterMotor;
 
-    public Algae(int shooterMotorOneID, int shooterMotorTwoID) {
-        shooterMotorOne = new SparkMax(shooterMotorOneID, MotorType.kBrushless);
-        shooterMotorTwo = new TalonFX(shooterMotorTwoID);
+    public AlgaeShooter(int falconId) {
+        shooterMotor = new TalonFX(falconId);
         
         TalonFXConfiguration motorConfig = new TalonFXConfiguration();
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-        shooterMotorTwo.getConfigurator().apply(motorConfig);
+        shooterMotor.getConfigurator().apply(motorConfig);
     }
 
     public void setSpeed(double speed) {
-        shooterMotorOne.set(speed);
-        shooterMotorTwo.set(speed);
-        SmartDashboard.putNumber("Shooter Speed", speed); // Debug: Check the value
+        shooterMotor.set(speed);
+        SmartDashboard.putNumber("Algae Shooter Speed", speed); // Debug: Check the value
     }
 
     public void stop() {
-        shooterMotorOne.set(0);
-        shooterMotorTwo.set(0);
-        SmartDashboard.putNumber("Shooter Speed", 0); // Debug: Ensure it stops
+        shooterMotor.set(0);
+    
+        SmartDashboard.putNumber("Algae Shooter Speed", 0); // Debug: Ensure it stops
     }
 
     /** Runs shooter forward at 30% speed */
