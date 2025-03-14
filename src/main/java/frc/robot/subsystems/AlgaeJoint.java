@@ -31,7 +31,7 @@ public class AlgaeJoint extends SubsystemBase {
     /** Runs shooter forward at 30% speed */
     public Command runJointForwardCommand() {
         return this.startEnd(() -> {
-            setSpeed(-0.5);
+            setSpeed(-0.1);
             System.out.println("Shooter Forward"); // Debug log
         }, this::stop);
     }
@@ -39,7 +39,7 @@ public class AlgaeJoint extends SubsystemBase {
     /** Runs shooter in reverse at -30% speed */
     public Command runJointReverseCommand() {
         return this.startEnd(() -> {
-            setSpeed(0.5);
+            setSpeed(0.1);
             System.out.println("Shooter Reverse"); // Debug log
         }, this::stop);
     }

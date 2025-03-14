@@ -90,14 +90,24 @@ public class RobotContainer {
     // =========================
     private void configureBindings() {
 
-        // Shooter Controls
+        // =========================
+        //  DRIVE CONTROLLER BINDINGS
+        // =========================
 
-        new JoystickButton(elevatorJoystick, PS4Controller.Button.kL1.value)
-        .whileTrue(shooter.runShooterReverseCommand());
+        // Drivetrain Default Command: 
+        drivetrain.setDefaultCommand(drivetrain.applyRequest(() ->
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed)  // Forward/Backward
+                     .withVelocityY(-joystick.getLeftX() * MaxSpeed)  // Strafing
+                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate)  // Rotation
+        ));
 
-        new JoystickButton(elevatorJoystick, PS4Controller.Button.kR1.value)
-                .whileTrue(shooter.runShooterForwardCommand());
-        
+      // Algae Joint Controls (L1 & R1)
+        new JoystickButton(joystick, PS4Controller.Button.kL1.value)
+      .whileTrue(joint.runJointReverseCommand());
+
+        new JoystickButton(joystick, PS4Controller.Button.kR1.value)
+      .whileTrue(joint.runJointForwardCommand());
+
         // Algae Shooter Controls (Triangle & Circle)
         new JoystickButton(joystick, PS4Controller.Button.kTriangle.value)
                 .whileTrue(algae.runShooterForwardCommand());
@@ -113,9 +123,20 @@ public class RobotContainer {
         new JoystickButton(joystick, PS4Controller.Button.kShare.value)
                 .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        // Elevator Controls
+         // =========================
+        //  ELEVATOR CONTROLLER BINDINGS
+        // =========================
+
+        // Elevator Default Commad
         elevator.setDefaultCommand(new ElevatorCommand(elevator, elevatorJoystick));
 
+        // Shooter Controls
+        new JoystickButton(elevatorJoystick, PS4Controller.Button.kL1.value)
+        .whileTrue(shooter.runShooterReverseCommand());
+
+        new JoystickButton(elevatorJoystick, PS4Controller.Button.kR1.value)
+                .whileTrue(shooter.runShooterForwardCommand());
+        
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kCross.value)
                 .onTrue(new MoveElevatorToHeight(elevator, 0));
 
@@ -123,20 +144,10 @@ public class RobotContainer {
                 .onTrue(new MoveElevatorToHeight(elevator, 17.5));
 
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kTriangle.value)
-                .onTrue(new MoveElevatorToHeight(elevator, 42));
+                .onTrue(new MoveElevatorToHeight(elevator, 42.5));
 
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kCircle.value)
                 .onTrue(new MoveElevatorToHeight(elevator, 75));
-
-
-        // =========================
-        //  DRIVETRAIN DEFAULT COMMAND
-        // =========================
-        drivetrain.setDefaultCommand(drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed)  // Forward/Backward
-                     .withVelocityY(-joystick.getLeftX() * MaxSpeed)  // Strafing
-                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate)  // Rotation
-        ));
 
         drivetrain.registerTelemetry(new Telemetry(MaxSpeed)::telemeterize);
     }
