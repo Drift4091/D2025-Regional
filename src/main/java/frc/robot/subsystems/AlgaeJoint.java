@@ -19,20 +19,20 @@ public class AlgaeJoint extends SubsystemBase {
 
     public void setSpeed(double speed) {
         jointMotor.set(speed);
-        SmartDashboard.putNumber("Algae Shooter Speed", speed); // Debug: Check the value
+        SmartDashboard.putNumber("Algae Joint Speed", speed); // Debug: Check the value
     }
 
     public void stop() {
         jointMotor.set(0);
     
-        SmartDashboard.putNumber("Algae Shooter Speed", 0); // Debug: Ensure it stops
+        SmartDashboard.putNumber("Algae Joint Speed", 0); // Debug: Ensure it stops
     }
 
     /** Runs shooter forward at 30% speed */
     public Command runJointForwardCommand() {
         return this.startEnd(() -> {
             setSpeed(-0.1);
-            System.out.println("Shooter Forward"); // Debug log
+            System.out.println("Joint Forward"); // Debug log
         }, this::stop);
     }
 
@@ -40,7 +40,7 @@ public class AlgaeJoint extends SubsystemBase {
     public Command runJointReverseCommand() {
         return this.startEnd(() -> {
             setSpeed(0.1);
-            System.out.println("Shooter Reverse"); // Debug log
+            System.out.println("Joint Reverse"); // Debug log
         }, this::stop);
     }
 }
