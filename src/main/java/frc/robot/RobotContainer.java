@@ -95,11 +95,30 @@ public class RobotContainer {
         // =========================
 
         // Drivetrain Default Command: 
-        drivetrain.setDefaultCommand(drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed)  // Forward/Backward
-                     .withVelocityY(-joystick.getLeftX() * MaxSpeed)  // Strafing
-                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate)  // Rotation
-        ));
+        drivetrain.setDefaultCommand(drivetrain.applyRequest(() -> {
+                boolean isL2Pressed = joystick.getL2Button(); 
+                boolean isR2Pressed = joystick.getR2Button();  
+            
+                double speedMultiplier;
+                double turnMultiplier;
+            
+                // Baja el speed multiplier si tu quieres mas precision
+                if (isL2Pressed) {
+                    speedMultiplier = 0.5;
+                } else {
+                        speedMultiplier = 1;
+                }
+            
+                if (isR2Pressed) {
+                    turnMultiplier = 0.5;
+                } else {
+                    turnMultiplier = 1;
+                }
+            
+                return drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * speedMultiplier)  // Forward/Backward
+                            .withVelocityY(-joystick.getLeftX() * MaxSpeed * speedMultiplier)  // Strafing
+                            .withRotationalRate(-joystick.getRightX() * MaxAngularRate * turnMultiplier); // Rotation
+            }));
 
       // Algae Joint Controls (L1 & R1)
         new JoystickButton(joystick, PS4Controller.Button.kL1.value)

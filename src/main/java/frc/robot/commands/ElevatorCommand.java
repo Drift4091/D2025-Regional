@@ -26,6 +26,10 @@ public class ElevatorCommand extends Command {
         double upSpeed;
         SmartDashboard.putBoolean("Bottom Limit Switch", elevator.getBottomLimitSwitch());
 
+        if (elevator.getBottomLimitSwitch()) {
+            elevator.resetEncoder();
+        }
+        
         if ( elevator.getEncoderPosition() < 1 || elevator.getBottomLimitSwitch()) {
             downSpeed = 0;
             
