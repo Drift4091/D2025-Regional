@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAlignToReef;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.MoveElevatorToHeight;
+import frc.robot.commands.ResetEncoder;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
 
@@ -49,7 +50,7 @@ public class RobotContainer {
     private final AlgaeJoint joint = new AlgaeJoint(17);
     private final Shooter shooter = new Shooter(15, 16);
     private final ElevatorSubsystem elevator = new ElevatorSubsystem(13, 14);
-    private final LEDSubsytem led = new LEDSubsytem(0, 30);
+    private final LEDSubsytem led = new LEDSubsytem(1, 30);
     private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
     // =========================
@@ -121,6 +122,7 @@ public class RobotContainer {
             }));
 
       // Algae Joint Controls (L1 & R1)
+
         new JoystickButton(joystick, PS4Controller.Button.kL1.value)
       .whileTrue(joint.runJointReverseCommand());
 
@@ -168,6 +170,9 @@ public class RobotContainer {
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kCircle.value)
                 .onTrue(new MoveElevatorToHeight(elevator, 75));
 
+        new JoystickButton(elevatorJoystick, PS4Controller.Button.kShare.value)
+                .onTrue(new ResetEncoder(elevator));
+        
         drivetrain.registerTelemetry(new Telemetry(MaxSpeed)::telemeterize);
     }
 
