@@ -36,7 +36,7 @@ public class AutoAlignToReef extends Command {
     private final double Target_Y = 0.0; // WILL NEED TO CHANGE THIS LATER  (DISTANCE FROM REEF)
 
     //This is the request that the swerve drive will use to move the robot. Its the same command that moves our robot in teleop (X, Y and Rotation) that we want for our bot
-    private final SwerveRequest.FieldCentric driveRequest = new SwerveRequest.FieldCentric();
+    private final SwerveRequest.RobotCentric driveRequest = new SwerveRequest.RobotCentric();
     
     //constructor (This is where we actually create the command)
     public AutoAlignToReef(CommandSwerveDrivetrain swerveDrive, LimelightSubsystem limelight) {

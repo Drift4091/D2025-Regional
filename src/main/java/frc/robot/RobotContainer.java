@@ -92,9 +92,10 @@ public class RobotContainer {
     }
 
     public void setUpAutoChooser(){
-        autoChooser.setDefaultOption("LeftAuto", new PathPlannerAuto("Auto1"));
-        //autoChooser.addOption();
-        SmartDashboard.putData("Selected Auto Routine", autoChooser);
+        autoChooser.setDefaultOption("LeftAuto", new PathPlannerAuto("LeftAuto"));
+        autoChooser.addOption("CenterAuto", new PathPlannerAuto("CenterAuto"));
+        autoChooser.addOption("RightAuto", new PathPlannerAuto("RightAuto"));
+        SmartDashboard.putData("AUTO", autoChooser);
     }
 
     // =========================
@@ -173,10 +174,11 @@ public class RobotContainer {
                 .onTrue(new MoveElevatorToHeight(elevator, 0));
 
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kSquare.value)
-                .onTrue(new MoveElevatorToHeight(elevator, 17.5));
+                .onTrue(new MoveElevatorToHeight(elevator, 13.5
+                ));
 
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kTriangle.value)
-                .onTrue(new MoveElevatorToHeight(elevator, 42.5));
+                .onTrue(new MoveElevatorToHeight(elevator, 39.6));
 
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kCircle.value)
                 .onTrue(new MoveElevatorToHeight(elevator, 75));
