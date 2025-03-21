@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -64,7 +66,7 @@ public class RobotContainer {
     // =========================
     //  AUTO SELECTOR
     // =========================
-    private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser("Auto1");
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     // =========================
     //  CONSTRUCTOR
@@ -72,6 +74,7 @@ public class RobotContainer {
     public RobotContainer() {
         configureBindings();
         configureSmartDashboard();
+        setUpAutoChooser();
     }
 
     // =========================
@@ -86,6 +89,12 @@ public class RobotContainer {
                 System.out.println("No auto path selected!");
             }
         }));
+    }
+
+    public void setUpAutoChooser(){
+        autoChooser.setDefaultOption("LeftAuto", new PathPlannerAuto("Auto1"));
+        //autoChooser.addOption();
+        SmartDashboard.putData("Selected Auto Routine", autoChooser);
     }
 
     // =========================
@@ -159,7 +168,7 @@ public class RobotContainer {
 
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kR1.value)
                 .whileTrue(shooter.runShooterForwardCommand());
-        
+    
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kCross.value)
                 .onTrue(new MoveElevatorToHeight(elevator, 0));
 
@@ -182,10 +191,12 @@ public class RobotContainer {
     //  GET AUTONOMOUS COMMAND
     // =========================
     public Command getAutonomousCommand() {
-        //return autoChooser.getSelected();
-        return Commands.sequence(
-            drivetrain.applyRequest(() -> robotCentric.withVelocityX(3))
-        );
+        return autoChooser.getSelected();
+        
+        // return Commands.sequence(
+        //     drivetrain.applyRequest(() -> robotCentric.withVelocityX(3))
+        // );
+
         //return new PathPlannerAuto("Auto1");
     }
 
