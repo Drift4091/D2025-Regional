@@ -30,7 +30,6 @@ public class AlgaeShooter extends SubsystemBase {
 
     public void stop() {
         shooterMotor.set(0);
-    
         SmartDashboard.putNumber("Algae Shooter Speed", 0); // Debug: Ensure it stops
     }
 

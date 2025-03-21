@@ -51,4 +51,5 @@ public class MoveElevatorToHeight extends Command {
         System.out.println("MoveElevatorToHeight ended.");
         elevator.stop();
     }
+    
 }

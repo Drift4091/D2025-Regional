@@ -46,8 +46,7 @@ public class ElevatorCommand extends Command {
                 upSpeed = holdingForce;
             }
         }
-
-
+        
         double speed = upSpeed + downSpeed;
         elevator.setSpeed(speed);
     }

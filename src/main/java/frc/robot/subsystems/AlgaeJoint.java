@@ -24,7 +24,6 @@ public class AlgaeJoint extends SubsystemBase {
 
     public void stop() {
         jointMotor.set(0);
-    
         SmartDashboard.putNumber("Algae Joint Speed", 0); // Debug: Ensure it stops
     }
 
@@ -43,4 +42,5 @@ public class AlgaeJoint extends SubsystemBase {
             System.out.println("Joint Reverse"); // Debug log
         }, this::stop);
     }
+    
 }

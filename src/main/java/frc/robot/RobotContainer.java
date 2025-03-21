@@ -62,7 +62,7 @@ public class RobotContainer {
     // =========================
     //  AUTO SELECTOR
     // =========================
-    private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+    private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser("Auto1");
 
     // =========================
     //  CONSTRUCTOR
@@ -76,7 +76,7 @@ public class RobotContainer {
     //  SMARTDASHBOARD SETUP
     // =========================
     private void configureSmartDashboard() {
-        SmartDashboard.putData("Run Selected Auto", new InstantCommand(() -> {
+        SmartDashboard.putData("Auto1", new InstantCommand(() -> {
             Command autoCommand = autoChooser.getSelected();
             if (autoCommand != null) {
                 autoCommand.schedule();
@@ -181,6 +181,7 @@ public class RobotContainer {
     // =========================
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
+        //return new PathPlannerAuto("Auto1");
     }
 
     // =========================
