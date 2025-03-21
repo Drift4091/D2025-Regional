@@ -196,7 +196,7 @@ public class RobotContainer {
 
         return Commands.sequence(
             autoChooser.getSelected(),
-            new MoveElevatorToHeight(elevator, 42.5),
+            new MoveElevatorToHeight(elevator, 40),
             shooter.runShooterForwardCommand().withTimeout(2))
             ;
         
