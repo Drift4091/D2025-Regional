@@ -42,9 +42,9 @@ public class RobotContainer {
             .withRotationalDeadband(MaxAngularRate * 0.1) // 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Open-loop control
 
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    private final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric();
+    // private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    // private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    // private final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric();
 
     // =========================
     //  SUBSYSTEMS
@@ -149,8 +149,8 @@ public class RobotContainer {
                 .whileTrue(algae.runShooterReverseCommand());
 
         // Auto Aligning using Limelight
-        new JoystickButton(joystick, PS4Controller.Button.kCross.value)
-                .whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
+        // new JoystickButton(joystick, PS4Controller.Button.kCross.value)
+        //         .whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
 
         // Field-centric reset
         new JoystickButton(joystick, PS4Controller.Button.kShare.value)
