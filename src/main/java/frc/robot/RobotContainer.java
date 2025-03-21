@@ -193,7 +193,12 @@ public class RobotContainer {
     //  GET AUTONOMOUS COMMAND
     // =========================
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+
+        return Commands.sequence(
+            autoChooser.getSelected(),
+            new MoveElevatorToHeight(elevator, 42.5),
+            shooter.runShooterForwardCommand().withTimeout(2))
+            ;
         
         // return Commands.sequence(
         //     drivetrain.applyRequest(() -> robotCentric.withVelocityX(3))
