@@ -90,9 +90,9 @@ public class RobotContainer {
     }
 
     public void setUpAutoChooser(){
-        autoChooser.setDefaultOption("RightAuto", new PathPlannerAuto("RightAuto"));
+        autoChooser.setDefaultOption("CenterAuto", new PathPlannerAuto("CenterAuto"));
         autoChooser.addOption("LeftAuto", new PathPlannerAuto("LeftAuto"));
-        autoChooser.addOption("CenterAuto", new PathPlannerAuto("CenterAuto"));
+        autoChooser.addOption("RightAuto", new PathPlannerAuto("RightAuto"));
         SmartDashboard.putData("AUTO", autoChooser);
     }
 
