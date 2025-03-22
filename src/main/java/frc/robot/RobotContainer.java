@@ -63,7 +63,7 @@ public class RobotContainer {
 
     // =========================
     //  AUTO SELECTOR
-    // =========================
+    // =========================+
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     // =========================
