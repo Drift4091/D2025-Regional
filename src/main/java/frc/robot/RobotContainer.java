@@ -5,12 +5,10 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -92,8 +90,8 @@ public class RobotContainer {
     }
 
     public void setUpAutoChooser(){
-        autoChooser.setDefaultOption("LeftAuto", new PathPlannerAuto("LeftAuto"));
-        autoChooser.addOption("CenterAuto", new PathPlannerAuto("CenterAuto"));
+        autoChooser.setDefaultOption("CenterAuto", new PathPlannerAuto("CenterAuto"));
+        autoChooser.addOption("LeftAuto", new PathPlannerAuto("LeftAuto"));
         autoChooser.addOption("RightAuto", new PathPlannerAuto("RightAuto"));
         SmartDashboard.putData("AUTO", autoChooser);
     }
@@ -187,6 +185,7 @@ public class RobotContainer {
                 .onTrue(new ResetEncoder(elevator));
         
         drivetrain.registerTelemetry(new Telemetry(MaxSpeed)::telemeterize);
+
     }
 
     // =========================
@@ -197,11 +196,10 @@ public class RobotContainer {
         return Commands.sequence(
             autoChooser.getSelected(),
             new MoveElevatorToHeight(elevator, 40),
-            shooter.runShooterForwardCommand().withTimeout(2))
-            ;
-        
+            shooter.runShooterForwardCommand().withTimeout(2));
+            
         // return Commands.sequence(
-        //     drivetrain.applyRequest(() -> robotCentric.withVelocityX(3))
+        //     drivetrain.applyRequest(() -> robotCentric.withVe+locityX(3))
         // );
 
         //return new PathPlannerAuto("Auto1");
