@@ -92,7 +92,7 @@ public class RobotContainer {
     }
 
     public void setUpAutoChooser(){
-        autoChooser.setDefaultOption("LeftAuto", new PathPlannerAuto("Auto1"));
+        autoChooser.setDefaultOption("b", new PathPlannerAuto("Auto1"));
         //autoChooser.addOption();
         SmartDashboard.putData("Selected Auto Routine", autoChooser);
     }
@@ -193,7 +193,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return Commands.sequence(
             autoChooser.getSelected(),
-            new MoveElevatorToHeight(elevator, 42.5),
+            new MoveElevatorToHeight(elevator, 43.5),
             shooter.runShooterForwardCommand().withTimeout(2) 
         );
         //return autoChooser.getSelected();
@@ -206,6 +206,7 @@ public class RobotContainer {
 
     // =========================
     //  SET LED DEFAULT COLOR
+    
     // =========================
     public Command setLEDDeafult() {
         return new InstantCommand(() -> led.setColor(57, 255, 20), led);

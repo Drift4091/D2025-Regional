@@ -31,7 +31,7 @@ public class MoveElevatorToHeight extends Command {
         speed = Math.max(-0.5, Math.min(speed, 0.5));
         if (elevator.getEncoderPosition() < 0 && speed < 0){
             speed = 0;
-        } else if (elevator.getEncoderPosition()>77.5 && speed > 0){
+        } else if (elevator.getEncoderPosition()>75.5 && speed > 0){
             speed = 0;
         } else {
         elevator.setSpeed(speed);
