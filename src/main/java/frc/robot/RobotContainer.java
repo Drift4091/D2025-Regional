@@ -5,12 +5,10 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,9 +40,9 @@ public class RobotContainer {
             .withRotationalDeadband(MaxAngularRate * 0.1) // 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Open-loop control
 
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    private final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric();
+    // private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    // private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    // private final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric();
 
     // =========================
     //  SUBSYSTEMS
@@ -65,7 +63,7 @@ public class RobotContainer {
 
     // =========================
     //  AUTO SELECTOR
-    // =========================
+    // =========================+
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     // =========================
@@ -92,9 +90,10 @@ public class RobotContainer {
     }
 
     public void setUpAutoChooser(){
-        autoChooser.setDefaultOption("b", new PathPlannerAuto("Auto1"));
-        //autoChooser.addOption();
-        SmartDashboard.putData("Selected Auto Routine", autoChooser);
+        autoChooser.setDefaultOption("CenterAuto", new PathPlannerAuto("CenterAuto"));
+        autoChooser.addOption("LeftAuto", new PathPlannerAuto("LeftAuto"));
+        autoChooser.addOption("RightAuto", new PathPlannerAuto("RightAuto"));
+        SmartDashboard.putData("AUTO", autoChooser);
     }
 
     // =========================
@@ -148,8 +147,8 @@ public class RobotContainer {
                 .whileTrue(algae.runShooterReverseCommand());
 
         // Auto Aligning using Limelight
-        new JoystickButton(joystick, PS4Controller.Button.kCross.value)
-                .whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
+        // new JoystickButton(joystick, PS4Controller.Button.kCross.value)
+        //         .whileTrue(new AutoAlignToReef(drivetrain, limelightSubsystem));
 
         // Field-centric reset
         new JoystickButton(joystick, PS4Controller.Button.kShare.value)
@@ -173,10 +172,11 @@ public class RobotContainer {
                 .onTrue(new MoveElevatorToHeight(elevator, 0));
 
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kSquare.value)
-                .onTrue(new MoveElevatorToHeight(elevator, 17.5));
+                .onTrue(new MoveElevatorToHeight(elevator, 13.5
+                ));
 
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kTriangle.value)
-                .onTrue(new MoveElevatorToHeight(elevator, 42.5));
+                .onTrue(new MoveElevatorToHeight(elevator, 39.6));
 
         new JoystickButton(elevatorJoystick, PS4Controller.Button.kCircle.value)
                 .onTrue(new MoveElevatorToHeight(elevator, 75));
@@ -185,20 +185,21 @@ public class RobotContainer {
                 .onTrue(new ResetEncoder(elevator));
         
         drivetrain.registerTelemetry(new Telemetry(MaxSpeed)::telemeterize);
+
     }
 
     // =========================
     //  GET AUTONOMOUS COMMAND
     // =========================
     public Command getAutonomousCommand() {
+
         return Commands.sequence(
             autoChooser.getSelected(),
-            new MoveElevatorToHeight(elevator, 43.5),
-            shooter.runShooterForwardCommand().withTimeout(2) 
-        );
-        //return autoChooser.getSelected();
+            new MoveElevatorToHeight(elevator, 40),
+            shooter.runShooterForwardCommand().withTimeout(2));
+            
         // return Commands.sequence(
-        //     drivetrain.applyRequest(() -> robotCentric.withVelocityX(3))
+        //     drivetrain.applyRequest(() -> robotCentric.withVe+locityX(3))
         // );
 
         //return new PathPlannerAuto("Auto1");
